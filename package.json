@@ -1,6 +1,7 @@
 {
   "name": "nse-scraper",
   "version": "1.0.0",
+  "description": "Scrape live NSE data from mystocks.co.ke",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
