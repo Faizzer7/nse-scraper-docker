@@ -5,6 +5,11 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 
+// ✅ Health check
+app.get('/', (req, res) => {
+  res.send('✅ NSE Scraper is running');
+});
+
 app.get('/api/scrape', async (req, res) => {
   try {
     const browser = await puppeteer.launch({
