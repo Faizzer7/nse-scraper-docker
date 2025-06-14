@@ -13,13 +13,14 @@ app.get('/api/scrape', async (req, res) => {
     });
 
     const page = await browser.newPage();
-    await page.goto('https://fib.co.ke/live-markets/', { waitUntil: 'networkidle2' });
+    await page.goto('https://live.mystocks.co.ke/market-statistics/equities', {
+      waitUntil: 'domcontentloaded'
+    });
 
-    // ✅ Wait for the table to appear
-    await page.waitForSelector('table tbody tr', { timeout: 10000 });
+    await page.waitForSelector('table.table tbody tr', { timeout: 20000 });
 
     const stocks = await page.evaluate(() => {
-      const rows = Array.from(document.querySelectorAll('table tbody tr'));
+      const rows = Array.from(document.querySelectorAll('table.table tbody tr'));
       return rows.map(row => {
         const cells = row.querySelectorAll('td');
         return {
