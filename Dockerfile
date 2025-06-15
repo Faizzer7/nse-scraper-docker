@@ -1,14 +1,10 @@
-# Use the official Node.js base image
 FROM node:20
 
-# Set the working directory
 WORKDIR /app
 
-# Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install
 
-# Install Puppeteer dependencies
 RUN apt-get update && apt-get install -y \
   wget \
   ca-certificates \
@@ -29,11 +25,7 @@ RUN apt-get update && apt-get install -y \
   xdg-utils \
   --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-# Copy the rest of the app
 COPY . .
 
-# Expose port
 EXPOSE 3000
-
-# Start the app
 CMD ["node", "server.js"]
