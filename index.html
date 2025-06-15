@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>NSE Live Prices</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+    table { width: 100%; border-collapse: collapse; background: #fff; }
+    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+    th { background: #1a202c; color: white; }
+    #loadBtn { padding: 10px 15px; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h2>📈 NSE Live Prices</h2>
+  <button id="loadBtn">🔄 Load Latest</button>
+  <table id="stockTable">
+    <thead>
+      <tr><th>Symbol</th><th>Name</th><th>Price</th><th>Change</th><th>%</th><th>Volume</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    document.getElementById('loadBtn').addEventListener('click', async () => {
+      const res = await fetch('/api/scrape');
+      const data = await res.json();
+      const tbody = document.querySelector('#stockTable tbody');
+      tbody.innerHTML = '';
+
+      if (data.success) {
+        data.stocks.forEach(stock => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${stock.symbol}</td>
+            <td>${stock.name}</td>
+            <td>${stock.price}</td>
+            <td>${stock.change}</td>
+            <td>${stock.percent}</td>
+            <td>${stock.volume}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      } else {
+        tbody.innerHTML = '<tr><td colspan="6">❌ Failed to load data</td></tr>';
+      }
+    });
+  </script>
+</body>
+</html>
